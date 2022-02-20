@@ -9,6 +9,12 @@ import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 const NavBar =  observer(() => {
     const {user} = useContext(Context);
     const history = useHistory();
+
+    const logOut = () => {
+      user.setUser({})
+      user.setIsAuth(false)
+      history.push(LOGIN_ROUTE)
+    }
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -16,11 +22,11 @@ const NavBar =  observer(() => {
         {user.isAuth ?
           <Nav className='ml-auto' style={{color: 'white'}}>
             <Button variant={'outline-light'} onClick={() => history.push(ADMIN_ROUTE)} className='mx-3'>Admin panel</Button>
-            <Button variant={'outline-light'} onClick={() => history.push(LOGIN_ROUTE)}>Logout</Button>
+            <Button variant={'outline-light'} onClick={() => logOut()}>Logout</Button>
           </Nav>
           :
           <Nav className='ml-auto' style={{color: 'white'}}>
-            <Button variant={'outline-light'} onClick={() => user.setIsAuth(true)}>Authorization</Button>
+            <Button variant={'outline-light'} onClick={() => history.push(LOGIN_ROUTE)}>Authorization</Button>
           </Nav>
         }
       </Container>
