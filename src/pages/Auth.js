@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import { Button, Card, Container, Form, Row } from 'react-bootstrap'
 import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import { login, registration } from '../http/userApi';
-import { REGISTRATION_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { REGISTRATION_ROUTE, LOGIN_ROUTE, SHOP_ROUTE, ADMIN_ROUTE } from '../utils/consts';
 import { observer } from 'mobx-react-lite'
 import { Context } from '..';
 
@@ -18,13 +18,14 @@ const Auth = observer(() => {
     try {
       let data;
         if (isLogin) {
-          data = await login(email, password)
+          data = await login(email, password);
+          history.push(ADMIN_ROUTE)
         } else {
           data = await registration(email, password)
         }
         user.setUser(user);
         user.setIsAuth(true);
-        history.push(SHOP_ROUTE)
+        history.push(ADMIN_ROUTE)
     } catch (e) {
       alert(e.response.data.message)
     }

@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
-import star from '../assets/star1.jpg'
+import star from '../assets/star1.jpg';
+import {useParams} from 'react-router-dom';
+import { fetchDevice } from '../http/deviceApi';
 
 const DevicePage = () => {
-  const device = {id: 1, name: 'Sunset H3', price: 1200, rating: 4, img: 'https://st.depositphotos.com/2562265/5111/i/600/depositphotos_51112145-stock-photo-lenovo-s6000.jpg'}
-  const description = [
-    {id: 1, title: 'RAM', description: 'ram memory ddr4 32 GB'},
-    {id: 2, title: 'cooler', description: 'water cpu cooler'},
-  ]
+  const [device, setDevice] = useState({info: []});
+  const {id} = useParams();
+  useEffect(() => {
+    fetchDevice(id).then(data => setDevice(data))
+  },[id])
   return (
     <Container className='mt-3'>
      <Row>
       <Col md={4}>
-          <Image width={300} height={300} src={device.img} />
+          <Image width={300} height={300} src={process.env.REACT_APP_API + device.img} />
         </Col>
         <Col md={4}>
           <Row className='d-flex flex-column align-items-center'>
@@ -37,7 +39,7 @@ const DevicePage = () => {
      </Row>
       <Row className='d-flex flex-column m-3'>
         <h2>Description</h2>
-        {description.map(info => (
+        {device.info.map(info => (
           <Row 
             key={info.id}
             style={{background: info.id % 2 === 0 && 'lightgrey', padding: 10}}
